@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>New Releases Tool</title>
+    
+    <style>
+      body { font-family: sans-serif; font-size: x-small;}
+      h2.album_title {margin: 1px; margin-top: 3px; width:85%; display:inline;}
+      div.album_box { width: 840px; margin-bottom: 10px; border: solid; border-color: gray; border-width: thin;
+          padding-left: 5px; padding-bottom: 5px; overflow:auto;#ccc;background-color:#EEFFFF;
+          -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;}
+      div.nr_box { width: 120px; margin-bottom: 9px; border: solid; border-color: gray;
+          border-width: thin; padding-left: 5px; padding-bottom: 5px; float: left; position: absolute;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em;}
+      div.nr_box p {margin: 1px;}
+      div.info_box { position: relative; padding:1px; width=100%;}
+      .prop { height:100px; float:right; width:1px;}
+      div#albumRights {position: absolute; left:0px; width: 100px;}
+      div#images {position: absolute; left:120px;}
+      div#links {position: absolute; left:260px;}
+      div#tracks {position: absolute; left:400px; width:260px;}
+      div#albumPrice {position: absolute; left:680px;}
+      .clear { clear:both; height:1px; overflow:hidden; }
+      h4 {margin: 1px;}
+      .seperation { color:blue; font-size:xx-small;}
+      #headertext {font-style: italic;}
+      #rightsFlag {font-size:xx-large;text-align:center;}
+      #album_price {font-size:large;text-align:center;}
+      hr {border: 1px solid #000;border-color:gray;margin-right:3px;}
+      #links p{text-align:center;}
+      .datatable {font-size:x-small;width:99%; text-align:center;}
+      .datatable th,td{border: 1px solid black; border-color: gray; border-spacing:10px;}
+      .datatable td {padding-left:3px; padding-right:3px;}
+      .success {color:green;}
+      .failure {color:red;}
+      .warning {color:#FFDD33;}
+      .allowed {color:green;}
+      .restricted {color:red;}
+      .header_shape {font-size:large}
+      #legend {position:absolute; left:880px; border:1px dotted;padding-left:8px;padding-right:5px;padding-top:1px;
+      -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;background-color:#FFFFCC}
+      #legend p{margin:1px;}
+      .legend_shape{font-size:xx-large;}
+      #legend h2{margin:0px;}
+      .symbol_box{position:absolute; right:15px; top:-2px;margin-top:0px; margin-bottom:0px;background-color:#EEFFFF}
+      .album_header {position:relative;}
+      #rightsSymbols {font-size:large;text-align:center;}
+      div.tally {float:left; width: 150px; border: solid; border-color: gray;
+          border-width: thin; padding: 3px; padding-bottom:5px; margin-left:5px; margin-right:5px; margin-top: 10px;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em; height:35px; text-align:center;}
+      div.tally p {margin:0px; font-size:1.5em;}
+      div#error_tally {padding-bottom:12px;}
+      p.ignore {color:#BBBBBB !important;}
+      p.ignore span{color:#BBBBBB !important;}
+      #total_albums {font-size:3em;}
+      #small_total_albums {font-size:1em;}
+      div.notfound {background-color:#ff55aa;color:white;}
+      div.notfound p {background-color:inherit;}
+      div.notfound span.failure {color:white;}
+      .albumlink {text-decoration: none; color:#000000;}
+    </style>
+    
+  </head>
+  <body>
+    <p id="headertext">Following you will find a list of album ids for the given batch.  You can find their rights, images, and other
+    vital characteristics.</p>
+    <div id="error_tally" class="album_box">
+      <div class="tally"><p id="total_albums"><span class="success">${error_tally['total_albums']['count']}</span><span id="small_total_albums"> albums</span></p></div>
+      <div class="tally"><p class="${error_tally['cannot_stream']['display']}"><span class="${error_tally['cannot_stream']['type']}">&#x25B6; </span>${error_tally['cannot_stream']['count']} cannot stream</p></div>
+      <div class="tally"><p class="${error_tally['missing_images_failures']['display']}"><span class="${error_tally['missing_images_failures']['type']}">&hearts; </span>${error_tally['missing_images_failures']['count']} missing 2+ images</p></div>
+      <div class="tally"><p class="${error_tally['missing_images_warnings']['display']}"><span class="${error_tally['missing_images_warnings']['type']}">&hearts; </span>${error_tally['missing_images_warnings']['count']} missing one image</p></div>
+      <div class="tally"><p class="${error_tally['missing_tracks_failures']['display']}"><span class="${error_tally['missing_tracks_failures']['type']}">&clubs; </span>${error_tally['missing_tracks_failures']['count']} are missing tracks</p></div>
+      <div class="tally"><p class="${error_tally['missing_track_prices']['display']}"><span class="${error_tally['missing_track_prices']['type']}"><strong>$ </strong></span>${error_tally['missing_track_prices']['count']} are missing track prices</p></div>
+      <div class="tally"><p class="${error_tally['missing_album_price']['display']}"><span class="${error_tally['missing_album_price']['type']}"><strong>&#x272A; </strong></span>${error_tally['missing_album_price']['count']} are missing the album price</p></div>
+      <div class="tally"><p class="${error_tally['track_duration_failure']['display']}"><span class="${error_tally['track_duration_failure']['type']}">&spades; </span>${error_tally['track_duration_failure']['count']} missing track durations</p></div>
+      <!--<div class="tally"><p class="${error_tally['missing_album_tags_failures']['display']}"><span class="${error_tally['missing_album_tags_failures']['type']}">&#x265e; </span>${error_tally['missing_album_tags_failures']['count']} are missing many album fields</p></div>   -->
+      <div class="tally"><p class="${error_tally['albums_missing_failures']['display']}"><span class="${error_tally['albums_missing_failures']['type']}">&#x271a; </span>${error_tally['albums_missing_failures']['count']} albums were not found</p></div>
+      <div class="tally"><p class="${error_tally['id_map_failure']['display']}"><span class="${error_tally['id_map_failure']['type']}">&diams; </span>${error_tally['id_map_failure']['count']} id mapper failures</p></div>     
+    </div>
+    <div id="legend">
+      <h1>Legend</h1>
+      <p><span class="legend_shape success">&#x25FC;</span>success</p>
+      <p><span class="legend_shape warning">&#x25FC;</span>warning</p>
+      <p><span class="legend_shape failure">&#x25FC;</span>failure</p>
+      <p><span class="legend_shape">&clubs;</span> missing tracks</p>
+      <p><span class="legend_shape">&spades;</span> missing track durations</p>
+      <p><span class="legend_shape">&hearts;</span> missing images</p>
+      <p><span class="legend_shape">&#x25B6;</span> streamable</p>
+      <p><span class="legend_shape"><strong>$</strong></span> &nbsp;&nbsp; tracks missing prices</p>
+      <p><span class="legend_shape">&#x272A;</span>&nbsp; album price missing</p>
+      <p><span class="legend_shape">&#x265e;</span>missing album tags</p>
+      <p><span class="legend_shape">&#x271a;</span>&nbsp;&nbsp;album not found</p>
+      <p><span class="legend_shape">&diams;</span>id mapper missing</p>
+    </div>
+    % for item in releases:
+      % if item['errors']['album_found'] == 'failure':
+      <div class="album_box notfound">
+        <div class="album_header">
+        <h2 class="album_title">${item['albumId']} not found</h2>
+        <p class="symbol_box">
+            <span class="${item['errors']['album_found']} header_shape">&#x271a;</span>
+        </p>
+        </div>
+      </div>
+      % else:
+      <div class="album_box">
+        <div class="album_header">
+          <h2 class="album_title"><a class="albumlink" href="${configs['url_prefix']}id/${item['releaseId']}/">${item['primaryArtistDisplayName']} <span class="seperation">&#x26ab;</span>
+          ${item['name']} <span class="seperation">&#x26ab;</span> ${item['albumId']}</a></h2>
+          <p class="symbol_box">
+            <span class="${item['errors']['id_mapper']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Id Mapper">&diams;</a></span>
+            <span class="${item['errors']['missing_tracks']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Missing Tracks">&clubs;</a></span>
+            <span class="${item['errors']['track_duration']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Missing Track Durations">&spades;</a></span>
+            <span class="${item['errors']['missing_images']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Missing Images">&hearts;</a></span>
+            <span class="${item['album_friendly_flags']['streamable']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Streamable">&#x25B6;</a></span>
+            <span class="${item['errors']['missing_track_prices']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Track Prices Missing"><strong>$</strong></a></span>
+            <span class="${item['errors']['missing_album_price']} header_shape">
+              <a style="text-decoration:none;color:inherit" href="${configs['url_prefix']}help#Missing Album Price"><strong>&#x272A;</strong></a></span>
+          </p>
+        </div>
+          <hr />
+          <div class="info_box">
+            <div class="prop"></div>
+            <div class="nr_box" id="albumRights">
+            <h4>album rights</h4>
+            <hr>
+              <p id="rightsFlag">${item['albumRights']}<a href="${configs['url_prefix']}rights/${item['albumRights']}/"><strong>?</strong></a></p>
+            </div>
+            <div class="nr_box" id="images">
+            <h4>images</h4>
+              <p>
+              % for size in item['images']['sizes'].keys():
+                <!--<a href="${item['images']['sizes'][size]}" rel="lightbox" title="${size}">${size}</a>-->
+                <img src="${item['images']['sizes'][size]}" height="35px" width="35px" alt=${size} title=${size}>
+              % endfor
+              </p>
+            </div>
+            <div class="nr_box" id="links">
+            <h4>links</h4>
+              <p><a href="/${item['albumId']}">com</a></p>
+              <p><a href="/${item['albumId']}">origin</a></p>
+              <p><a href="/${item['albumId']}">mp3</a></p>
+              <p><a href="/${item['albumId']}">origin-mp3</a></p>
+              <p><a href="/${item['albumId']}">qa</a></p>
+            </div>
+            <div class="nr_box" id="tracks">
+                <table class="datatable">
+                    <tr>
+                        <th>#</th>
+                        <th>tracks</th>
+                        <th>time</th>
+                        <th>rights</th>
+                        <th>prices</th>
+                    </tr>
+                    % if 'tracks' in item.keys():
+                      % for track in item['tracks']:
+                      <tr>
+                          <td><span class="index">${track['trackIndex']}</span></td>
+                          % if track['name']:
+                          <td>${track['name'][:15]}</td>
+                          % else:
+                          <td>---error---</td>
+                          % endif
+                          <td>${track['playbackSeconds']}s</td>
+                          <td>${track['rightFlags']}</td>
+                          <td>${track['price']}</td>
+                      </tr>
+                      % endfor
+                    %endif
+                </table>
+            </div>
+            <div class="nr_box" id="albumPrice">
+              <h4>album price</h4>
+              <hr>
+              <p id="album_price">${item['album_price']}</p>
+            </div>
+            <div class="clear"></div><div class="clear"></div>
+          </div>
+      </div>
+      % endif
+    % endfor
+  </body>
+</html>

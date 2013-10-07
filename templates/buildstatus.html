@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>New Releases Tool</title>
+    <style>
+      body { font-family: sans-serif; font-size: x-small;}
+      h2.album_title {margin: 1px; margin-top: 3px; width:85%; display:inline;}
+      div.album_box { width: 840px; margin-bottom: 10px; border: solid; border-color: gray; border-width: thin;
+          padding-left: 5px; padding-bottom: 5px; overflow:auto;#ccc;background-color:#EEFFFF;
+          -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;}
+      div.nr_box { width: 120px; margin-bottom: 9px; border: solid; border-color: gray;
+          border-width: thin; padding-left: 5px; padding-bottom: 5px; float: left; position: absolute;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em;}
+      div.nr_box p {margin: 1px;}
+      div.info_box { position: relative; padding:1px; width=100%;}
+      .prop { height:100px; float:right; width:1px;}
+      div#albumRights {position: absolute; left:0px; width: 100px;}
+      div#images {position: absolute; left:120px;}
+      div#links {position: absolute; left:260px;}
+      div#tracks {position: absolute; left:400px; width:260px;}
+      div#albumPrice {position: absolute; left:680px;}
+      .clear { clear:both; height:1px; overflow:hidden; }
+      h4 {margin: 1px;}
+      .seperation { color:blue; font-size:xx-small;}
+      #headertext {font-style: italic;}
+      #rightsFlag {font-size:xx-large;text-align:center;}
+      #album_price {font-size:large;text-align:center;}
+      hr {border: 1px solid #000;border-color:gray;margin-right:3px;}
+      #links p{text-align:center;}
+      .datatable {font-size:x-small;width:99%; text-align:center;}
+      .datatable th,td{border: 1px solid black; border-color: gray; border-spacing:10px;}
+      .datatable td {padding-left:3px; padding-right:3px;}
+      .success {color:green;}
+      .failure {color:red;}
+      .warning {color:#FFDD33;}
+      .allowed {color:green;}
+      .restricted {color:red;}
+      .header_shape {font-size:large}
+      #legend {position:absolute; left:880px; border:1px dotted;padding-left:8px;padding-right:5px;padding-top:1px;
+      -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;background-color:#FFFFCC}
+      #legend p{margin:1px;}
+      .legend_shape{font-size:xx-large;}
+      #legend h2{margin:0px;}
+      .symbol_box{position:absolute; right:15px; top:-2px;margin-top:0px; margin-bottom:0px;background-color:#EEFFFF}
+      .album_header {position:relative;}
+      #rightsSymbols {font-size:large;text-align:center;}
+      div.tally {float:left; width: 150px; border: solid; border-color: gray;
+          border-width: thin; padding: 3px; padding-bottom:5px; margin-left:5px; margin-right:5px; margin-top: 10px;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em; height:35px; text-align:center;}
+      div.tally p {margin:0px; font-size:1.5em;}
+      div#error_tally {padding-bottom:12px;}
+      p.ignore {color:#BBBBBB !important;}
+      p.ignore span{color:#BBBBBB !important;}
+      #total_albums {font-size:3em;}
+      #small_total_albums {font-size:1em;}
+      div.notfound {background-color:#ff55aa;color:white;}
+      div.notfound p {background-color:inherit;}
+      div.notfound span.failure {color:white;}
+      .albumlink {text-decoration: none; color:#000000;}
+    </style>
+  </head>
+
+  <body>
+    <p id="headertext">This is the build status page to understand when the build finishes, and the
+    deployed changes to its caches (and therefore what the world sees).</p>
+    <div id="cds">
+      <h2>Status (${cds['total_tested']} servers reporting out of 114)</h2>
+      % for cache_type in cds['count'].keys():
+      <p> ${cds['count'][cache_type]} ${cache_type} caches are failing</p>
+      % endfor
+    </div>
+    <div id="cops">
+      <h2>Build</h2>
+      <table>
+        <tr>
+          <th>Status</th>
+          <th>Started</th>
+          <th>Ended</th>
+        </tr>
+        <tr>
+          <td>${cops['status']}</td>
+          <td>${cops['startDate']}</td>
+          <td>${cops['endDate']}</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

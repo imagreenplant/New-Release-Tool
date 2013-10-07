@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>New Releases Tool (text)</title>
+    <style>
+      body { font-family: sans-serif; font-size: x-small;}
+      h2.album_title {margin: 1px; margin-top: 3px; width:85%; display:inline;}
+      div.album_box { width: 840px; margin-bottom: 10px; border: solid; border-color: gray; border-width: thin;
+          padding-left: 5px; padding-bottom: 5px; overflow:auto;#ccc;background-color:#EEFFFF;
+          -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;}
+      div.error_box { width: 190px; margin: 5px; border: solid; border-color: gray;
+          border-width: thin; padding-left: 5px; padding-bottom: 5px; float: left;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em;
+          text-align:center;}
+      div.error_box h2 {margin-top:2px;margin-bottom:2px;}
+      div.error_box p {margin-top:1px;margin-bottom:1px;}
+      div.nr_box p {margin: 1px;}
+      div.info_box { position: relative; padding:1px; width=100%;}
+      .seperation { color:blue; font-size:xx-small;}
+      #headertext {font-style: italic;}
+      hr {border: 1px solid #000;border-color:gray;margin-right:3px;}
+      .success {color:green;}
+      .failure {color:red;}
+      .warning {color:#FFDD33;}
+      .allowed {color:green;}
+      .restricted {color:red;}
+      .header_shape {font-size:large}
+      #legend {position:absolute; left:880px; border:1px dotted;padding-left:8px;padding-right:5px;padding-top:1px;
+      -moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;background-color:#FFFFCC}
+      #legend p{margin:1px;}
+      .legend_shape{font-size:xx-large;}
+      #legend h2{margin:0px;}
+      .symbol_box{position:absolute; right:15px; top:-2px;margin-top:0px; margin-bottom:0px;background-color:#EEFFFF}
+      .album_header {position:relative;}
+      #rightsSymbols {font-size:large;text-align:center;}
+      div.tally {float:left; width: 150px; border: solid; border-color: gray;
+          border-width: thin; padding: 3px; padding-bottom:5px; margin-left:5px; margin-right:5px; margin-top: 10px;
+          background-color:white;-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em; height:35px; text-align:center;}
+      div.tally p {margin:0px; font-size:1.5em;}
+      div#error_tally {padding-bottom:12px;}
+      p.ignore {color:#BBBBBB !important;}
+      p.ignore span{color:#BBBBBB !important;}
+      #total_albums {font-size:3em;}
+      #small_total_albums {font-size:1em;}
+      div.notfound {background-color:#ff55aa;color:white;}
+      div.notfound p {background-color:inherit;}
+      div.notfound span.failure {color:white;}
+    </style>
+    
+  </head>
+  <body>
+    <p id="headertext">Following you will find a text dump of the ids experiencing failures.</p>
+    <div id="error_tally" class="album_box">
+      <div class="tally"><p id="total_albums"><span class="success">${error_tally['total_albums']['count']}</span><span id="small_total_albums"> albums</span></p></div>
+      <div class="tally"><p class="${error_tally['cannot_stream']['display']}"><span class="${error_tally['cannot_stream']['type']}">&#x25B6; </span>${error_tally['cannot_stream']['count']} cannot stream</p></div>
+      <div class="tally"><p class="${error_tally['missing_images_failures']['display']}"><span class="${error_tally['missing_images_failures']['type']}">&hearts; </span>${error_tally['missing_images_failures']['count']} missing 2+ images</p></div>
+      <div class="tally"><p class="${error_tally['missing_images_warnings']['display']}"><span class="${error_tally['missing_images_warnings']['type']}">&hearts; </span>${error_tally['missing_images_warnings']['count']} missing one image</p></div>
+      <div class="tally"><p class="${error_tally['missing_tracks_failures']['display']}"><span class="${error_tally['missing_tracks_failures']['type']}">&clubs; </span>${error_tally['missing_tracks_failures']['count']} are missing tracks</p></div>
+      <div class="tally"><p class="${error_tally['missing_track_prices']['display']}"><span class="${error_tally['missing_track_prices']['type']}"><strong>$ </strong></span>${error_tally['missing_track_prices']['count']} are missing track prices</p></div>
+      <div class="tally"><p class="${error_tally['missing_album_price']['display']}"><span class="${error_tally['missing_album_price']['type']}"><strong>&#x272A; </strong></span>${error_tally['missing_album_price']['count']} are missing the album price</p></div>
+      <div class="tally"><p class="${error_tally['track_duration_failure']['display']}"><span class="${error_tally['track_duration_failure']['type']}">&spades; </span>${error_tally['track_duration_failure']['count']} missing track durations</p></div>
+      <!--<div class="tally"><p class="${error_tally['missing_album_tags_failures']['display']}"><span class="${error_tally['missing_album_tags_failures']['type']}">&#x265e; </span>${error_tally['missing_album_tags_failures']['count']} are missing many album fields</p></div>   -->
+      <div class="tally"><p class="${error_tally['albums_missing_failures']['display']}"><span class="${error_tally['albums_missing_failures']['type']}">&#x271a; </span>${error_tally['albums_missing_failures']['count']} albums were not found</p></div>
+      <div class="tally"><p class="${error_tally['id_map_failure']['display']}"><span class="${error_tally['id_map_failure']['type']}">&diams; </span>${error_tally['id_map_failure']['count']} id mapper failures</p></div>     
+    </div>
+    % for list_type in error_tally.keys():
+      <div class="error_box">
+          <h2>${error_tally[list_type]['description']}</h2>
+          % for id in error_tally[list_type]['ids']:
+          <p class="release_id">${id}</p>
+          % endfor
+      </div>
+    % endfor
+  </body>
+</html>

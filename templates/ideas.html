@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Ideas</title>
+        <style>
+            #container {position: relative;}
+            #column-left {width: 350px;height: 500px;}
+            #header {margin:0;border:1px solid #ccc;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;margin-bottom:10px;
+                        background-color:LightSkyBlue;}
+            .column {margin:0;border:1px solid #ccc;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;
+                        border-bottom-width:10px;background-color:#CFEEEE;}
+            #column-right {position: absolute;top: 1px;right: 1px;bottom: 1px;width: 430px;overflow: auto;}
+            #column-right p {font-size:0.8em;}
+            #wrapper            {text-align:center; width: 800px;margin-right:100px;}
+            body            {font:1em/1.4 Verdana, Arial, Helvetica, sans-serif;margin:1em auto;width:60em;padding:0;}
+            fieldset        {border:none;}
+            legend          {color:#333;padding-top:10px;margin:0;font:1em/1.5 Verdana, Arial, Helvetica, sans-serif;}
+            input           {width:300px;}
+            input,textarea {border:1px solid #ccc;padding:5px;margin:10px 0 0 0;}
+            input:focus,textarea:focus  {background:#ffc;}
+            textarea        {font:.9em Verdana, Arial, Helvetica, sans-serif;}
+            label           {display:block;margin:12px 0 0;font-size:.9em;float:left;clear:left;width:auto;}
+            label:after     {content:": ";}
+            .yay, .oops     {font-size:.8em;text-align:center;padding:10px;color:#fff;font-weight:700;}
+            .yay            {background:#090;}
+            .oops           {background:#f30;}
+            div.error       {font-size:.8em;font-weight:700;padding:5px 0 0;color:#f30;margin:0 0 0 90px;}
+            p.idea_box      {margin:5px; background-color:white; border:1px solid; border-color:lightgray;}
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <h2>Idea Maker</h2>
+            </div>
+            <div id="container">
+                <div id="column-left" class="column">
+                    <form action="${configs['url_prefix']}addidea/" method="post">
+                        <fieldset>
+                            <legend>Idea Maker</legend>
+                            <p><input type="submit" value="Submit" /></p>    
+                            ${idea_form.as_p()}
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="column-right" class="column">
+                    <h3>Recent Ideas</h3>
+                    % for idea in ideas:
+                        % if idea.name:
+                            <p class="idea_box">${idea.name}</p>
+                        % endif
+                    % endfor
+                </div>
+            </div>
+            <div id="footer">
+                <h2></h2>
+            </div>
+        </div>
+    </body>
+</html>

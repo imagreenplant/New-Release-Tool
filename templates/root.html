@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <title>dashboard</title>
+    <link rel="stylesheet" type="text/css" href="${configs['media_url']}dash/dash.css"/>
+    <link rel="stylesheet" type="text/css" href="${configs['media_url']}dash/root.css"/>
+    <style type="text/css">
+        #shapes {font-size:7em;margin: 1px;}
+        .green {color:green;}
+        .yellow {color:yellow;}
+        .red {color:red;}
+        div.section {-moz-border-radius:0.5em;-webkit-border-radius:0.5em;border-radius:0.5em;}
+        div.section p {font-size:2em;}
+    </style>
+</head>
+<body>
+    <div class="sectionbox">
+        <p class="sectionlabel">tools</p>
+        <div class="section">
+            <p><a href="${configs['url_prefix']}batchmaker/">batchmaker</a></p>
+            <p><a href="${configs['url_prefix']}ideamaker/">ideamaker</a></p>
+            <p><a href="${configs['url_prefix']}status/build/">build status</a></p>
+        </div>
+    </div>
+</body>
+</html>
